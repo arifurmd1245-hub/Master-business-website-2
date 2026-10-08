@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Master Business System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+
+    <!-- Header Navigation -->
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-store text-blue-600 text-2xl"></i>
+                <h1 class="text-xl font-bold text-gray-900" id="biz-title">Universal Business</h1>
+            </div>
+            <div class="flex items-center space-x-3">
+                <a id="wa-btn" href="#" target="_blank" class="bg-green-500 text-white px-3 py-1.5 rounded-full text-xs font-semibold hover:bg-green-600 transition flex items-center space-x-1">
+                    <i class="fa-brands fa-whatsapp text-sm"></i>
+                    <span>WhatsApp</span>
+                </a>
+                <button onclick="openAdmin()" class="bg-gray-800 text-white px-3 py-1.5 rounded text-xs font-semibold hover:bg-black transition flex items-center space-x-1">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Admin Panel</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white text-center py-12 px-4 shadow-inner">
+        <h2 class="text-3xl font-extrabold mb-3" id="hero-title">Welcome to Our Business</h2>
+        <p class="text-sm opacity-90 max-w-xl mx-auto" id="hero-subtitle">High-quality products and professional services configured dynamically from your admin panel.</p>
+    </section>
+
+    <!-- Customer Website Main -->
+    <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-bold text-gray-800">Products & Services</h3>
+            <span class="text-xs text-gray-500 bg-gray-200 px-2.5 py-1 rounded-full" id="item-count">0 Items</span>
+        </div>
+        
+        <!-- Grid List -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-12" id="products-grid">
+            <!-- Dynamic Content via app.js -->
+        </div>
+
+        <!-- Order / Booking Checkout Form -->
+        <div id="checkout-container" class="bg-white p-6 rounded-xl border border-gray-200 shadow-md hidden max-w-2xl mx-auto">
+            <h3 class="text-lg font-bold border-b pb-3 mb-4 text-gray-800 flex items-center space-x-2">
+                <i class="fa-solid fa-cart-shopping text-blue-600"></i>
+                <span>Order Confirmation & Booking</span>
+            </h3>
+            
+            <div class="bg-amber-50 border-l-4 border-amber-400 p-3 mb-5 rounded text-xs text-amber-800" id="caution-notice">
+                <i class="fa-solid fa-triangle-exclamation mr-1"></i>
+                Please ensure your contact number and delivery address are accurate before completing the order.
+            </div>
+
+            <form id="order-form" class="space-y-4">
+                <div>
+                    <label class="text-xs font-semibold text-gray-700 block mb-1">Customer Full Name *</label>
+                    <input type="text" id="cust-name" required class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Enter your full name">
+                </div>
+                <div>
+                    <label class="text-xs font-semibold text-gray-700 block mb-1">Mobile Number *</label>
+                    <input type="tel" id="cust-phone" required class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="017XXXXXXXX">
+                </div>
+                <div>
+                    <label class="text-xs font-semibold text-gray-700 block mb-1">Shipping / Delivery Area *</label>
+                    <select id="delivery-select" onchange="recalculateTotal()" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        <!-- Filled dynamically -->
+                    </select>
+                </div>
+                <div>
+                    <label class="text-xs font-semibold text-gray-700 block mb-1">Detailed Delivery Address *</label>
+                    <textarea id="cust-address" required rows="2" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="House number, Road, Area name..."></textarea>
+                </div>
+
+                <div class="pt-3 border-t space-y-1.5 text-sm bg-gray-50 p-3 rounded-lg">
+                    <div class="flex justify-between text-gray-600">
+                        <span>Items Total:</span>
+                        <span>৳<span id="subtotal-val">0</span></span>
+                    </div>
+                    <div class="flex justify-between text-gray-600">
+                        <span>Delivery Charge:</span>
+                        <span>৳<span id="delivery-val">0</span></span>
+                    </div>
+                    <div class="flex justify-between font-bold text-base border-t pt-2 text-gray-900">
+                        <span>Grand Total Payable:</span>
+                        <span>৳<span id="grandtotal-val">0</span></span>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-green-600 text-white py-3 rounded-lg text-sm font-bold hover:bg-green-700 transition shadow-sm">
+                    Confirm Order (Cash on Delivery)
+                </button>
+            </form>
+        </div>
+
+        <!-- Invoice / Receipt Printable Area -->
+        <div id="invoice-container" class="bg-white border-2 border-green-500 rounded-xl p-6 mt-8 hidden max-w-lg mx-auto print:m-0 print:border-none shadow-lg">
+            <div class="text-center mb-5">
+                <i class="fa-solid fa-circle-check text-green-500 text-4xl mb-2"></i>
+                <h3 class="text-green-700 font-extrabold text-xl">Order Successfully Placed!</h3>
+                <p class="text-xs text-gray-500 mt-1">Invoice ID: <span id="inv-id" class="font-mono font-bold"></span></p>
+            </div>
+            <div class="text-sm space-y-2 mb-5 border-t border-b py-4">
+                <p><strong>Customer:</strong> <span id="inv-name"></span></p>
+                <p><strong>Phone:</strong> <span id="inv-phone"></span></p>
+                <p><strong>Delivery Zone:</strong> <span id="inv-zone"></span></p>
+                <p><strong>Address:</strong> <span id="inv-address"></span></p>
+                <p class="text-base pt-2 border-t"><strong>Total Payable:</strong> ৳<span id="inv-amount" class="font-bold text-green-700"></span></p>
+            </div>
+            <button onclick="window.print()" class="w-full bg-gray-900 text-white text-xs py-2.5 rounded-lg font-bold hover:bg-black transition print:hidden flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-print"></i>
+                <span>Print Order Slip / Invoice</span>
+            </button>
+        </div>
+    </main>
+
+    <!-- ADMIN MODAL DIALOG -->
+    <div id="admin-modal" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto p-6">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <h3 class="text-lg font-bold text-gray-800 flex items-center space-x-2">
+                    <i class="fa-solid fa-sliders text-blue-600"></i>
+                    <span>System Admin Panel</span>
+                </h3>
+                <button onclick="closeAdmin()" class="text-gray-400 text-2xl font-bold hover:text-gray-700">&times;</button>
+            </div>
+
+            <!-- Login View -->
+            <div id="admin-login-box" class="max-w-sm mx-auto py-10">
+                <div class="text-center mb-4">
+                    <i class="fa-solid fa-lock text-3xl text-gray-400 mb-2"></i>
+                    <p class="text-xs text-gray-500">Default Admin Password: <code class="bg-gray-100 px-1 rounded font-bold">1234</code></p>
+                </div>
+                <input type="password" id="admin-pass-input" placeholder="Enter Security Password" class="w-full border rounded-lg px-3 py-2 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button onclick="authenticateAdmin()" class="w-full bg-blue-600 text-white py-2.5 rounded-lg text-sm font-bold hover:bg-blue-700 transition">Unlock Panel</button>
+            </div>
+
+            <!-- Dashboard View -->
+            <div id="admin-content-box" class="hidden space-y-6">
+                <!-- Nav Tabs -->
+                <div class="flex border-b text-sm font-semibold space-x-6">
+                    <button onclick="tabSwitch('products')" id="tab-btn-products" class="pb-3 border-b-2 border-blue-600 text-blue-600">Products & Services</button>
+                    <button onclick="tabSwitch('orders')" id="tab-btn-orders" class="pb-3 text-gray-500 hover:text-blue-600">Customer Orders (<span id="orders-badge">0</span>)</button>
+                    <button onclick="tabSwitch('settings')" id="tab-btn-settings" class="pb-3 text-gray-500 hover:text-blue-600">Business Setup</button>
+                </div>
+
+                <!-- Products Tab -->
+                <div id="tab-products" class="space-y-4">
+                    <div class="bg-gray-50 p-4 rounded-lg border text-sm space-y-3">
+                        <h4 class="font-bold text-gray-800">Add New Product or Service</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <input type="text" id="add-title" placeholder="Item Title / Name" class="border rounded-lg px-3 py-2">
+                            <input type="number" id="add-price" placeholder="Price (৳)" class="border rounded-lg px-3 py-2">
+                            <select id="add-type" class="border rounded-lg px-3 py-2">
+                                <option value="product">Product</option>
+                                <option value="service">Service</option>
+                            </select>
+                            <input type="text" id="add-img" placeholder="Image URL (e.g. https://...)" class="border rounded-lg px-3 py-2">
+                        </div>
+                        <button onclick="saveNewItem()" class="bg-green-600 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-green-700 transition">+ Add Item</button>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm border rounded-lg">
+                            <thead class="bg-gray-100 text-xs uppercase border-b">
+                                <tr>
+                                    <th class="p-3">Title</th>
+                                    <th class="p-3">Type</th>
+                                    <th class="p-3">Price</th>
+                                    <th class="p-3">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="items-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Orders Tab -->
+                <div id="tab-orders" class="hidden space-y-4">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm border rounded-lg">
+                            <thead class="bg-gray-100 text-xs uppercase border-b">
+                                <tr>
+                                    <th class="p-3">Order ID</th>
+                                    <th class="p-3">Customer</th>
+                                    <th class="p-3">Phone</th>
+                                    <th class="p-3">Amount</th>
+                                    <th class="p-3">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orders-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Settings Tab -->
+                <div id="tab-settings" class="hidden space-y-4 text-sm">
+                    <div class="bg-gray-50 p-4 rounded-lg border space-y-3">
+                        <h4 class="font-bold text-gray-800">Business Configuration & Delivery Rules</h4>
+                        <div>
+                            <label class="block text-xs font-bold mb-1">Business Name:</label>
+                            <input type="text" id="cfg-biz-name" class="w-full border rounded-lg px-3 py-2">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold mb-1">WhatsApp Contact Number:</label>
+                            <input type="text" id="cfg-wa-num" class="w-full border rounded-lg px-3 py-2">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold mb-1">Inside City Delivery (৳):</label>
+                                <input type="number" id="cfg-del-in" class="w-full border rounded-lg px-3 py-2">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold mb-1">Outside City Delivery (৳):</label>
+                                <input type="number" id="cfg-del-out" class="w-full border rounded-lg px-3 py-2">
+                            </div>
+                        </div>
+                        <button onclick="saveBusinessConfig()" class="bg-blue-600 text-white px-5 py-2.5 rounded-lg text-xs font-bold hover:bg-blue-700 transition">Save Settings</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 text-center py-6 text-xs mt-auto">
+        <p>&copy; 2026 <span id="footer-biz-name">Universal Business</span>. All rights reserved.</p>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
